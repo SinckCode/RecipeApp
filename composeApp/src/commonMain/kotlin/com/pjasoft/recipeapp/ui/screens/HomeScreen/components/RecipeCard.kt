@@ -1,6 +1,7 @@
 package com.pjasoft.recipeapp.ui.screens.HomeScreen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,12 +24,16 @@ import com.pjasoft.recipeapp.domain.models.Recipe
 @Composable
 fun RecipeCard(
     recipe: Recipe,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
             .width(220.dp)
-            .height(240.dp),               // un poco más bajita
+            .height(240.dp)
+            .clickable(){
+                onClick()
+            },               // un poco más bajita
         shape = RoundedCornerShape(22.dp), // esquinas más redondas
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)

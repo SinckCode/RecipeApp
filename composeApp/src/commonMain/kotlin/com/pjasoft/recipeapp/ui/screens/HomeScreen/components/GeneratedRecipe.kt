@@ -31,11 +31,17 @@ import com.pjasoft.recipeapp.ui.RecipeTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun GeneratedRecipe(recipe: RecipeDTO) {
+fun GeneratedRecipe(
+    recipe: RecipeDTO?,
+    isFromHistory: Boolean,
+    onSave: () -> Unit,
+    onClose: () -> Unit
+) {
     val colors = MaterialTheme.colorScheme
 
     Column(
@@ -47,20 +53,20 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
     ) {
         // Imagen
         AsyncImage(
-            model = recipe.imageUrl,
-            contentDescription = recipe.title,
+            model = recipe?.imageUrl,
+            contentDescription = recipe?.title,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
                 .clip(RoundedCornerShape(24.dp)),
-            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Título
         Text(
-            text = recipe.title,
+            text = recipe?.title ?: "",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.onBackground
@@ -79,7 +85,7 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = recipe.stars.toString(),
+                text = recipe?.stars.toString(),
                 color = colors.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
@@ -94,7 +100,7 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "${recipe.minutes} min",
+                text = "${recipe?.minutes} min",
                 color = colors.primary,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -102,7 +108,7 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = recipe.category,
+                text = recipe?.category ?: "",
                 color = colors.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
@@ -126,8 +132,8 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            recipe.ingredients.forEach { ingredient ->
-                Tag(text = ingredient)   // tu chip/etiqueta bonita
+            recipe?.ingredients?.forEach { ingredient ->
+                Tag(text = ingredient, onClick = {})   // tu chip/etiqueta bonita
             }
         }
 
@@ -146,7 +152,7 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            recipe.instructions.forEachIndexed { index, instruction ->
+            recipe?.instructions?.forEachIndexed { index, instruction ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top
@@ -168,6 +174,27 @@ fun GeneratedRecipe(recipe: RecipeDTO) {
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedButton(
+                modifier = Modifier.weight(1f),
+                onClick = onClose
+            ) {
+                Text("Cerrar")
+            }
+
+            if (!isFromHistory) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = onSave
+                ) {
+                    Text("Guardar")
+                }
+            }
+        }
     }
 }
 
@@ -209,6 +236,11 @@ fun GeneratedRecipePreview() {
     )
 
     RecipeTheme {
-        GeneratedRecipe(recipe = recipe)
+        GeneratedRecipe(
+            recipe = recipe,
+            isFromHistory = false,
+            onSave = {},
+            onClose = {}
+        )
     }
 }

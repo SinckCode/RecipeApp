@@ -34,6 +34,8 @@ fun RecipeRow(
     onClick: () -> Unit
 ) {
 
+    val colors = MaterialTheme.colorScheme
+
 
     Row(
         modifier = Modifier

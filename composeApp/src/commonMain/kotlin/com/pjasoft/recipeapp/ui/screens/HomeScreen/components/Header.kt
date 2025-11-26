@@ -27,7 +27,7 @@ import com.pjasoft.recipeapp.ui.screens.HomeScreen.HomeScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Header(){
+fun Header(onLoguot: () -> Unit){
     val colors = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
@@ -62,7 +62,7 @@ fun Header(){
         Spacer(modifier = Modifier.width(10.dp))
 
         IconButton(
-            onClick = {  }
+            onClick = onLoguot
         ){
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.Logout,
@@ -73,10 +73,3 @@ fun Header(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview(){
-    RecipeTheme {
-        Header()
-    }
-}

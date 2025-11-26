@@ -14,7 +14,10 @@ import androidx.compose.ui.unit.dp
 import de.jensklingenberg.ktorfit.http.Tag
 
 @Composable
-fun Tag(text : String){
+fun Tag(
+    text : String,
+    onClick: () -> Unit
+){
     val colors = MaterialTheme.colorScheme
     Text(
         text = text,
@@ -23,7 +26,7 @@ fun Tag(text : String){
             .background(colors.primary.copy(alpha = 0.1f))
             .padding(horizontal = 20.dp, vertical = 10.dp)
             .clickable{
-
+                onClick()
             },
         color = colors.primary,
         fontWeight = FontWeight.Bold

@@ -36,11 +36,11 @@ import recipeapp512.composeapp.generated.resources.compose_multiplatform
 fun App() {
     RecipeTheme {
         val navController = rememberNavController()
+
         NavHost(
             navController = navController,
-            //startDestination = LoginScreenRoute
-            startDestination = MainScreenGraph
-        ){
+            startDestination = LoginScreenRoute
+        ) {
             composable<LoginScreenRoute> {
                 LoginScreen(navController = navController)
             }
@@ -51,10 +51,16 @@ fun App() {
 
             navigation<MainScreenGraph>(
                 startDestination = MainScreenRoute
-            ){
+            ) {
                 composable<MainScreenRoute> {
-                    MainScren()
+                    // ⬇️ aquí le pasamos el MISMO navController
+                    MainScren(navController = navController)
                 }
+
+                // Si quieres, también podrías declarar más pantallas aquí
+                // composable<HomeScreenRoute> {
+                //     HomeScreen(navController = navController)
+                // }
             }
         }
     }

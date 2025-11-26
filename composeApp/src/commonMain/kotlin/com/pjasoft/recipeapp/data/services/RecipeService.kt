@@ -11,11 +11,12 @@ import de.jensklingenberg.ktorfit.http.Query
 interface RecipeService {
 
     @POST("recipes/ai-generate")
-    suspend fun generateRecipe(@Body prompt: Prompt) : RecipeDTO
+    suspend fun generateRecipe(@Body prompt: Prompt): RecipeDTO
 
     @GET("recipes")
-    suspend fun getRecipesByUserId(@Query("userId") user: Int) : List <Recipe>
+    suspend fun getRecipesByUserId(@Query("userId") user: Int): List<Recipe>
 
-    @POST("recipies")
-    suspend fun saveGeneratedRecipe(@Body recipe: Recipe) : Recipe
+    @POST("recipes")
+    suspend fun saveGeneratedRecipe(@Body recipe: Recipe): Recipe
+    // si tu API espera RecipeDTO en vez de Recipe, cambia el tipo aquí
 }

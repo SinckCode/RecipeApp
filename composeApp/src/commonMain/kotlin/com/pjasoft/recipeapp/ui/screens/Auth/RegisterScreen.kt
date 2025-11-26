@@ -17,8 +17,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.pjasoft.recipeapp.ui.Components.LoadingOverlay
 import com.pjasoft.recipeapp.ui.screens.Auth.components.AuthBackGround
 import com.pjasoft.recipeapp.ui.screens.Auth.components.AuthCard
 import com.pjasoft.recipeapp.ui.screens.Auth.components.AuthTextField
@@ -27,17 +31,25 @@ import com.pjasoft.recipeapp.ui.screens.LoginScreenRoute
 import com.pjasoft.recipeapp.ui.screens.MainScreenRoute
 import com.pjasoft.recipeapp.ui.screens.RegisterScreenRoute
 import com.pjasoft.recipeapp.ui.viewmodels.AuthViewModel
+import kotlin.reflect.KClass
 
 @Composable
 fun RegisterScreen(
     navController: NavController
 ) {
-    val viewModel : AuthViewModel = viewModel()
+    val viewModel : AuthViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return AuthViewModel() as T
+            }
+        }
+    )
     val color = MaterialTheme.colorScheme
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
+    val colors = MaterialTheme.colorScheme
 
     Box(Modifier.fillMaxSize()) {
         AuthBackGround()
@@ -113,7 +125,7 @@ fun RegisterScreen(
                             password = password
                         ){ result, message ->
                             if (result){
-                                navController.navigate(MainScreenRoute){
+                                navController.navigate(LoginScreenRoute){
                                     popUpTo(RegisterScreenRoute) {
                                         inclusive = true
                                     }
@@ -142,5 +154,12 @@ fun RegisterScreen(
                 )
             }
         }
+    }
+
+    if (viewModel.isLoading) {
+        LoadingOverlay(
+            colors = colors,
+            message = "Iniciando sesión…"
+        )
     }
 }
